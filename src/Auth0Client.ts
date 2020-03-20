@@ -33,10 +33,11 @@ export default class Auth0Client {
   private transactionManager: TransactionManager;
   private domainUrl: string;
   private tokenIssuer: string;
-  private readonly DEFAULT_SCOPE = 'openid profile email';
+  private readonly DEFAULT_SCOPE: string;
 
   constructor(private options: Auth0ClientOptions) {
     validateCrypto();
+    this.DEFAULT_SCOPE = this.options.defaultScope || 'openid profile email';
     this.cache = new Cache();
     this.transactionManager = new TransactionManager();
     this.domainUrl = `https://${this.options.domain}`;
