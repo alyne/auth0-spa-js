@@ -33,7 +33,7 @@ export default class Auth0Client {
   private transactionManager: TransactionManager;
   private domainUrl: string;
   private tokenIssuer: string;
-  private readonly DEFAULT_SCOPE: string;
+  private DEFAULT_SCOPE: string;
 
   constructor(private options: Auth0ClientOptions) {
     validateCrypto();
