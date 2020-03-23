@@ -61,6 +61,10 @@ interface BaseLoginOptions {
   [key: string]: any;
 }
 
+interface AdvancedOptions {
+  defaultScope?: string;
+}
+
 interface Auth0ClientOptions extends BaseLoginOptions {
   /**
    * Your Auth0 account domain such as `'example.auth0.com'`,
@@ -76,6 +80,7 @@ interface Auth0ClientOptions extends BaseLoginOptions {
    * The Client ID found on your Application settings page
    */
   client_id: string;
+
   /**
    * The default URL where Auth0 will redirect your browser to with
    * the authentication result. It must be whitelisted in
@@ -95,6 +100,8 @@ interface Auth0ClientOptions extends BaseLoginOptions {
    * Defaults to 60s.
    */
   authorizeTimeoutInSeconds?: number;
+
+  advancedOptions?: AdvancedOptions;
 }
 
 /**

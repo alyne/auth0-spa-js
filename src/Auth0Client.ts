@@ -24,6 +24,7 @@ import version from './version';
 
 const lock = new Lock();
 const GET_TOKEN_SILENTLY_LOCK_KEY = 'auth0.lock.getTokenSilently';
+const DEFAULT_SCOPE = 'openid profile email';
 
 /**
  * Auth0 SDK for Single Page Applications using [Authorization Code Grant Flow with PKCE](https://auth0.com/docs/api-auth/tutorials/authorization-code-grant-pkce).
@@ -33,11 +34,14 @@ export default class Auth0Client {
   private transactionManager: TransactionManager;
   private domainUrl: string;
   private tokenIssuer: string;
-  private DEFAULT_SCOPE: string;
+  private defaultScope: string;
 
   constructor(private options: Auth0ClientOptions) {
     validateCrypto();
-    this.DEFAULT_SCOPE = this.options.defaultScope || 'openid profile email';
+    this.defaultScope =
+      this.options.advancedOptions && this.options.advancedOptions.defaultScope
+        ? this.options.advancedOptions.defaultScope
+        : DEFAULT_SCOPE;
     this.cache = new Cache();
     this.transactionManager = new TransactionManager();
     this.domainUrl = `https://${this.options.domain}`;
@@ -68,7 +72,7 @@ export default class Auth0Client {
       ...withoutDomain,
       ...authorizeOptions,
       scope: getUniqueScopes(
-        this.DEFAULT_SCOPE,
+        this.defaultScope,
         this.options.scope,
         authorizeOptions.scope
       ),
@@ -219,10 +223,10 @@ export default class Auth0Client {
   public async getUser(
     options: GetUserOptions = {
       audience: this.options.audience || 'default',
-      scope: this.options.scope || this.DEFAULT_SCOPE
+      scope: this.options.scope || this.defaultScope
     }
   ) {
-    options.scope = getUniqueScopes(this.DEFAULT_SCOPE, options.scope);
+    options.scope = getUniqueScopes(this.defaultScope, options.scope);
     const cache = this.cache.get(options);
     return cache && cache.decodedToken.user;
   }
@@ -239,10 +243,10 @@ export default class Auth0Client {
   public async getIdTokenClaims(
     options: getIdTokenClaimsOptions = {
       audience: this.options.audience || 'default',
-      scope: this.options.scope || this.DEFAULT_SCOPE
+      scope: this.options.scope || this.defaultScope
     }
   ) {
-    options.scope = getUniqueScopes(this.DEFAULT_SCOPE, options.scope);
+    options.scope = getUniqueScopes(this.defaultScope, options.scope);
     const cache = this.cache.get(options);
     return cache && cache.decodedToken.claims;
   }
@@ -341,11 +345,11 @@ export default class Auth0Client {
   public async getTokenSilently(
     options: GetTokenSilentlyOptions = {
       audience: this.options.audience,
-      scope: this.options.scope || this.DEFAULT_SCOPE,
+      scope: this.options.scope || this.defaultScope,
       ignoreCache: false
     }
   ) {
-    options.scope = getUniqueScopes(this.DEFAULT_SCOPE, options.scope);
+    options.scope = getUniqueScopes(this.defaultScope, options.scope);
 
     try {
       const {
@@ -451,12 +455,12 @@ export default class Auth0Client {
   public async getTokenWithPopup(
     options: GetTokenWithPopupOptions = {
       audience: this.options.audience,
-      scope: this.options.scope || this.DEFAULT_SCOPE
+      scope: this.options.scope || this.defaultScope
     },
     config: PopupConfigOptions = DEFAULT_POPUP_CONFIG_OPTIONS
   ) {
     options.scope = getUniqueScopes(
-      this.DEFAULT_SCOPE,
+      this.defaultScope,
       this.options.scope,
       options.scope
     );
