@@ -9,7 +9,6 @@ export default class Auth0Client {
   private tokenIssuer;
   private defaultScope;
   constructor(options: Auth0ClientOptions);
-  get _defaultScope(): string;
   private _url;
   private _getParams;
   private _authorizeUrl;

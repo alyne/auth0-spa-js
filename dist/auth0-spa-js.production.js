@@ -2552,13 +2552,6 @@
             : this.domainUrl + '/');
       }
       return (
-        Object.defineProperty(e.prototype, '_defaultScope', {
-          get: function() {
-            return this.defaultScope;
-          },
-          enumerable: !0,
-          configurable: !0
-        }),
         (e.prototype._url = function(e) {
           var t = encodeURIComponent(
             btoa(JSON.stringify({ name: 'auth0-spa-js', version: '1.6.4' }))
@@ -2627,7 +2620,6 @@
                         audience: d.audience || 'default',
                         redirect_uri: d.redirect_uri
                       }),
-                      console.log('url+fragment @ location', p + l),
                       [2, p + l]
                     );
                 }
@@ -2665,7 +2657,6 @@
                       (d = this._authorizeUrl(
                         t(t({}, l), { response_mode: 'web_message' })
                       )),
-                      console.log(d),
                       [
                         4,
                         Zn(

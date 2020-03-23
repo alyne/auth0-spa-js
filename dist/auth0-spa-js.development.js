@@ -3703,13 +3703,6 @@
         ? 'https://' + this.options.issuer + '/'
         : this.domainUrl + '/';
     }
-    Object.defineProperty(Auth0Client.prototype, '_defaultScope', {
-      get: function() {
-        return this.defaultScope;
-      },
-      enumerable: true,
-      configurable: true
-    });
     Auth0Client.prototype._url = function(path) {
       var telemetry = encodeURIComponent(
         btoa(
@@ -3826,7 +3819,6 @@
                 audience: params.audience || 'default',
                 redirect_uri: params.redirect_uri
               });
-              console.log('url+fragment @ location', url + fragment);
               return [2 /*return*/, url + fragment];
           }
         });
@@ -3889,7 +3881,6 @@
               url = this._authorizeUrl(
                 __assign(__assign({}, params), { response_mode: 'web_message' })
               );
-              console.log(url);
               return [
                 4 /*yield*/,
                 runPopup(
